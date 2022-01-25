@@ -2,6 +2,14 @@
 
 #include <JuceHeader.h>
 
+struct DualButton : juce::Component
+{
+    DualButton();
+    void resized() override;
+private:
+    juce::TextButton button1 {"button1"}, button2 {"button2"};
+};
+
 struct Widget: juce::Component
 {
     Widget(int i): num(i)
@@ -103,5 +111,6 @@ private:
 //    int counter = 0;
     MyComp comp;
     OwnedArrayComponent ownedArrayComp;
+    DualButton dualButton;
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MainComponent)
 };

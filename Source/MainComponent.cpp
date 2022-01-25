@@ -1,5 +1,30 @@
 #include "MainComponent.h"
 
+DualButton::DualButton()
+{
+    addAndMakeVisible(button1);
+    addAndMakeVisible(button2);
+    
+    button1.onClick = [this]()
+    {
+        DBG("Button 1's size: " << this->button1.getBounds().toString());
+    };
+    
+    button2.onClick = [this]()
+    {
+        DBG("Button 2's size: " << this->button2.getBounds().toString());
+    };
+}
+
+void DualButton::resized()
+{
+    auto bounds = getLocalBounds();
+    button1.setBounds(bounds.removeFromLeft(30));
+    button2.setBounds(bounds);
+}
+
+
+
 OwnedArrayComponent::OwnedArrayComponent()
 {
     for(int i = 0; i < 10; i++)
@@ -53,6 +78,7 @@ MainComponent::MainComponent()
 {
     addAndMakeVisible(comp);
     addAndMakeVisible(ownedArrayComp);
+    addAndMakeVisible(dualButton);
 //    comp.addMouseListener(this, false);
     ownedArrayComp.addMouseListener(this, true);
     setSize (600, 400);
@@ -84,4 +110,5 @@ void MainComponent::resized()
                                 comp.getBottom() + 5,
                                 getWidth() - comp.getX(),
                                 getHeight() - comp.getBottom());
+    dualButton.setBounds(comp.getBounds().withX(comp.getRight() + 5));
 }
