@@ -1,11 +1,60 @@
 #include "MainComponent.h"
 
+OwnedArrayComponent::OwnedArrayComponent()
+{
+    for(int i = 0; i < 10; i++)
+    {
+        auto* widget = buttons.add(new juce::TextButton(juce::String(i)));
+        addAndMakeVisible(widget);
+        widget->addListener(this);
+    }
+}
+
+OwnedArrayComponent::~OwnedArrayComponent()
+{
+    for(int i = 0; i < buttons.size(); i++)
+    {
+        auto* widget = buttons[i];
+        widget->removeListener(this);
+    }
+}
+
+void OwnedArrayComponent::resized()
+{
+    auto width = getWidth() / static_cast<float>(buttons.size());
+    int x = 0;
+    auto h = getHeight();
+    for(auto* widget : buttons)
+    {
+        widget->setBounds(x, 0, width, h);
+        x += width;
+    }
+}
+
+void OwnedArrayComponent::buttonClicked(juce::Button* buttonThatWasClicked)
+{
+    
+    if(buttonThatWasClicked == buttons.getFirst())
+    {
+        DBG("you clicked the first button");
+    }
+    else if (buttonThatWasClicked == buttons.getLast())
+    {
+        DBG("you clicekd the last button");
+    }
+    else
+    {
+        DBG("you clicked some other button");
+    }
+}
+
 //==============================================================================
 MainComponent::MainComponent()
 {
     addAndMakeVisible(comp);
     addAndMakeVisible(ownedArrayComp);
-    comp.addMouseListener(this, false);
+//    comp.addMouseListener(this, false);
+    ownedArrayComp.addMouseListener(this, true);
     setSize (600, 400);
 }
 
