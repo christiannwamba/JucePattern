@@ -2,12 +2,14 @@
 
 #include <JuceHeader.h>
 
-struct RepeatingThing;
 struct DualButton : juce::Component
 {
-    DualButton(RepeatingThing&);
+    DualButton();
     void resized() override;
-    RepeatingThing& timerThing;
+//    RepeatingThing& timerThing;
+    
+    void setButton1Handler(std::function<void()>);
+    void setButton2Handler(std::function<void()>);
 private:
     juce::TextButton button1 {"button1"}, button2 {"button2"};
 };
@@ -26,7 +28,7 @@ struct RepeatingThing : juce::Component, juce::Timer
     
     RepeatingThing()
     {
-        startTimer(100);
+        startTimer(1000);
     }
     ~RepeatingThing()
     {
@@ -139,6 +141,6 @@ private:
     MyComp comp;
     OwnedArrayComponent ownedArrayComp;
     RepeatingThing repeatingThing;
-    DualButton dualButton {repeatingThing};
+    DualButton dualButton;
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MainComponent)
 };

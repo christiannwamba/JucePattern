@@ -1,22 +1,21 @@
 #include "MainComponent.h"
 
-DualButton::DualButton(RepeatingThing& repeathingThing) :
-timerThing(repeathingThing)
+DualButton::DualButton()
 {
     addAndMakeVisible(button1);
     addAndMakeVisible(button2);
     
-    button1.onClick = [this]()
-    {
-        DBG("Button 1's size: " << this->button1.getBounds().toString());
-        timerThing.startTimer(1000);
-    };
-    
-    button2.onClick = [this]()
-    {
-        DBG("Button 2's size: " << this->button2.getBounds().toString());
-        timerThing.stopTimer();
-    };
+//    button1.onClick = [this]()
+//    {
+//        DBG("Button 1's size: " << this->button1.getBounds().toString());
+//        timerThing.startTimer(1000);
+//    };
+//
+//    button2.onClick = [this]()
+//    {
+//        DBG("Button 2's size: " << this->button2.getBounds().toString());
+//        timerThing.stopTimer();
+//    };
 }
 
 void DualButton::resized()
@@ -26,6 +25,16 @@ void DualButton::resized()
     button2.setBounds(bounds);
 }
 
+
+void DualButton::setButton1Handler(std::function<void()> f)
+{
+    button1.onClick = f;
+}
+
+void DualButton::setButton2Handler(std::function<void()> f)
+{
+    button2.onClick = f;
+}
 
 
 OwnedArrayComponent::OwnedArrayComponent()
@@ -83,6 +92,14 @@ MainComponent::MainComponent()
     addAndMakeVisible(ownedArrayComp);
     addAndMakeVisible(dualButton);
     addAndMakeVisible(repeatingThing);
+    dualButton.setButton1Handler([this]()
+                                     {
+                                        repeatingThing.startTimer(1000);
+                                    });
+    dualButton.setButton2Handler([this]()
+                                     {
+                                        repeatingThing.stopTimer();
+                                    });
 //    comp.addMouseListener(this, false);
     ownedArrayComp.addMouseListener(this, true);
     setSize (600, 400);
