@@ -2,10 +2,12 @@
 
 #include <JuceHeader.h>
 
+struct RepeatingThing;
 struct DualButton : juce::Component
 {
-    DualButton();
+    DualButton(RepeatingThing&);
     void resized() override;
+    RepeatingThing& timerThing;
 private:
     juce::TextButton button1 {"button1"}, button2 {"button2"};
 };
@@ -136,7 +138,7 @@ private:
 //    int counter = 0;
     MyComp comp;
     OwnedArrayComponent ownedArrayComp;
-    DualButton dualButton;
     RepeatingThing repeatingThing;
+    DualButton dualButton {repeatingThing};
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MainComponent)
 };
