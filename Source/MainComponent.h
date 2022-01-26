@@ -10,6 +10,31 @@ private:
     juce::TextButton button1 {"button1"}, button2 {"button2"};
 };
 
+struct RepeatingThing : juce::Component, juce::Timer
+{
+    void timerCallback() override
+    {
+        drawRed = !drawRed;
+        repaint();
+    }
+    void paint(juce::Graphics& g) override
+    {
+        g.fillAll(drawRed ? juce::Colours::red : juce::Colours::green);
+    }
+    
+    RepeatingThing()
+    {
+        startTimer(100);
+    }
+    ~RepeatingThing()
+    {
+        stopTimer();
+    }
+    
+private:
+    bool drawRed = true;
+};
+
 struct Widget: juce::Component
 {
     Widget(int i): num(i)
@@ -112,5 +137,6 @@ private:
     MyComp comp;
     OwnedArrayComponent ownedArrayComp;
     DualButton dualButton;
+    RepeatingThing repeatingThing;
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MainComponent)
 };
