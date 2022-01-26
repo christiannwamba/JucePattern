@@ -92,6 +92,7 @@ MainComponent::MainComponent()
     addAndMakeVisible(ownedArrayComp);
     addAndMakeVisible(dualButton);
     addAndMakeVisible(repeatingThing);
+    addAndMakeVisible(myAsyncHighResGui);
     dualButton.setButton1Handler([this]()
                                      {
                                         repeatingThing.startTimer(1000);
@@ -133,6 +134,8 @@ void MainComponent::resized()
                                 getHeight() - comp.getBottom());
     dualButton.setBounds(comp.getBounds()
                          .withX(comp.getRight() + 5));
-    repeatingThing.setBounds(comp.getBounds()
+    repeatingThing.setBounds(dualButton.getBounds()
                              .withX(dualButton.getRight() + 5));
+    myAsyncHighResGui.setBounds(repeatingThing.getBounds()
+                             .withX(repeatingThing.getRight() + 5));
 }
