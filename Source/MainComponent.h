@@ -2,6 +2,41 @@
 
 #include <JuceHeader.h>
 
+struct ImageProcessingThread : juce::Thread
+{
+    ImageProcessingThread(int w_, int h_);
+    ~ImageProcessingThread();
+    void run() override;
+    void setUpdateRendereFunc(std::function<void(juce::Image&&)> f);
+private:
+    int w {0}, h {0};
+    std::function<void(juce::Image&&)> updateRenderer;
+    juce::Random r;
+};
+
+struct LambdaTimer : juce::Timer
+{
+    LambdaTimer(int ms, std::function<void()> f);
+    ~LambdaTimer();
+    void timerCallback() override;
+private:
+    std::function<void()> lambda;
+};
+
+#include <array>
+struct Renderer : juce::Component, juce::AsyncUpdater
+{
+    Renderer();
+    ~Renderer();
+    void paint(juce::Graphics& g) override;
+    void handleAsyncUpdate() override;
+private:
+    std::unique_ptr<ImageProcessingThread> processingThread;
+    std::unique_ptr<LambdaTimer> lambdaTimer;
+    bool firstImage = true;
+    std::array<juce::Image, 2> imageToRender;
+};
+
 struct DualButton : juce::Component
 {
     DualButton();
@@ -186,5 +221,7 @@ private:
     RepeatingThing repeatingThing;
     DualButton dualButton;
     MyAsyncHighResGui myAsyncHighResGui;
+    Renderer renderer;
+    
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MainComponent)
 };
