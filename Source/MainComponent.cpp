@@ -46,7 +46,7 @@ void ImageProcessingThread::run()
         
     }
 }
-void ImageProcessingThread::setUpdateRendereFunc(std::function<void(juce::Image&&)> f)
+void ImageProcessingThread::setUpdateRendererFunc(std::function<void(juce::Image&&)> f)
 {
     updateRenderer = std::move(f);
 }
@@ -74,7 +74,7 @@ Renderer::Renderer()
     lambdaTimer = std::make_unique<LambdaTimer>(10, [this]()
     {
         processingThread = std::make_unique<ImageProcessingThread>(getWidth(), getHeight());
-        processingThread->setUpdateRendereFunc([this](juce::Image&& image){
+        processingThread->setUpdateRendererFunc([this](juce::Image&& image){
             int renderIndex = firstImage ? 0 : 1;
             firstImage = !firstImage;
             imageToRender[renderIndex] = std::move(image);

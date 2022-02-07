@@ -7,7 +7,7 @@ struct ImageProcessingThread : juce::Thread
     ImageProcessingThread(int w_, int h_);
     ~ImageProcessingThread();
     void run() override;
-    void setUpdateRendereFunc(std::function<void(juce::Image&&)> f);
+    void setUpdateRendererFunc(std::function<void(juce::Image&&)> f);
 private:
     int w {0}, h {0};
     std::function<void(juce::Image&&)> updateRenderer;
